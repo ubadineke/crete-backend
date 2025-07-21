@@ -8,12 +8,16 @@ import {
 export function IsSolanaPublicKey(validationOptions?: ValidationOptions) {
   return function (object: Object, propertyName: string) {
     registerDecorator({
-      name: 'isSolanPublicKey',
+      name: 'isSolanaPublicKey',
       target: object.constructor,
       propertyName,
       options: validationOptions,
       validator: {
         validate(value: any, _args: ValidationArguments) {
+          if (typeof value !== 'string') {
+            return false;
+          }
+
           try {
             new PublicKey(value);
             return true;

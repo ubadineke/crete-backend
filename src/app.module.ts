@@ -5,6 +5,10 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
+import { ServerModule } from './server/server.module';
+import { DaosModule } from './daos/daos.module';
+import { SolanaModule } from './solana/solana.module';
+import { User } from './user/entities/user.entity';
 
 @Module({
   imports: [
@@ -24,6 +28,9 @@ import { UserModule } from './user/user.module';
     }) as any,
     AuthModule,
     UserModule,
+    ServerModule,
+    DaosModule,
+    SolanaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

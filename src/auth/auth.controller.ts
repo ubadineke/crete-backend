@@ -12,7 +12,7 @@ import {
 import { AuthService } from './auth.service';
 import { ChallengeRequestDTO } from './dto/request-challenge.dto';
 import { VerifyChallengeDTO } from './dto/verify-challenge.dto';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './guards/auth.guard';
 
 @Controller('auth')
 @UsePipes()
