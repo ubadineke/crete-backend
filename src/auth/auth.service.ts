@@ -46,7 +46,7 @@ export class AuthService {
     };
     const challengeJWT = await this.jwtService.signAsync(challenge, {
       secret: this.configService.get('JWT_SECRET'),
-      expiresIn: '5m',
+      expiresIn: '24h', //TODO: change to 5m in production
     });
 
     return { challengeJWT };

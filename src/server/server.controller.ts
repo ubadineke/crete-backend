@@ -1,15 +1,31 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ServerService } from './server.service';
 import { CreateServerDto } from './dto/create-server.dto';
 import { UpdateServerDto } from './dto/update-server.dto';
+import { CurrentUser } from 'src/user/user.decorator';
+import { User } from 'src/user/entities/user.entity';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Server')
 @Controller('server')
 export class ServerController {
   constructor(private readonly serverService: ServerService) {}
 
   @Post()
-  create(@Body() createServerDto: CreateServerDto) {
-    return this.serverService.create(createServerDto);
+  @ApiOperation({
+    summary: 'Create a Server',
+    description: 'create a server tied to a dao onchain',
+  })
+  create(@Body() createServerDto: CreateServerDto, @CurrentUser() user) {
+    return this.serverService.create(createServerDto, user);
   }
 
   @Get()

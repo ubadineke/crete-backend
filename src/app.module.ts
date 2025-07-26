@@ -9,6 +9,7 @@ import { ServerModule } from './server/server.module';
 import { DaosModule } from './daos/daos.module';
 import { SolanaModule } from './solana/solana.module';
 import { User } from './user/entities/user.entity';
+import { ChannelModule } from './channel/channel.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { User } from './user/entities/user.entity';
     ServerModule,
     DaosModule,
     SolanaModule,
+    ChannelModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -14,16 +14,18 @@ export class DaosService {
   }
 
   async fetchAllDaos() {
-    return await this.splGovernance.getAllRealms();
+    return await this.splGovernance.getAllV1Realms();
   }
 
   async fetchDaoByPubkey(pubkey: string) {
+    let key;
     try {
-      new PublicKey(pubkey);
-      return await this.splGovernance.getRealmV1ByPubkey(new PublicKey(pubkey));
+      key = new PublicKey(pubkey);
     } catch (error) {
       throw new BadRequestException('Not a Solana PublicKey');
     }
+
+    return this.splGovernance.getRealmV1ByPubkey(key);
   }
 
   async createDao(dto: CreateDaoDTO, user: User) {
@@ -64,4 +66,7 @@ export class DaosService {
       throw new BadRequestException('Error creating DAO');
     }
   }
+
+  // create proposal
+  // vote proposal
 }
