@@ -8,8 +8,10 @@ import { ConfigService } from '@nestjs/config';
 import { VerifyChallengeDTO } from './dto/verify-challenge.dto';
 import * as nacl from 'tweetnacl';
 import bs58 from 'bs58';
-import { PublicKey } from '@solana/web3.js';
+import { Keypair, PublicKey } from '@solana/web3.js';
 import { UserService } from 'src/user/user.service';
+import * as fs from 'fs';
+import { homedir } from 'os';
 
 @Injectable()
 export class AuthService {
@@ -39,6 +41,7 @@ export class AuthService {
   }
 
   async generateChallenge(walletAddress: string) {
+    console.log('Entered the Generated Challenge Service');
     const challenge = {
       address: walletAddress,
       timestamp: Date.now(),
@@ -59,7 +62,7 @@ export class AuthService {
       const challenge = await this.jwtService.verifyAsync(challengeToken, {
         secret: this.configService.get('JWT_SECRET'),
       });
-      console.log(challenge);
+      // console.log(challenge);
       const isValidSignature = this.verifySolanaSignature(
         walletAddress,
         challengeToken,
@@ -99,9 +102,13 @@ export class AuthService {
   ): boolean {
     try {
       const messageBytes = new TextEncoder().encode(message);
+      console.log(message);
       const signatureBytes = bs58.decode(signature);
-      console.log(signature);
+      // console.log(signature);
       const publicKey = new PublicKey(walletAddress);
+      console.log(messageBytes);
+      console.log(signatureBytes);
+      console.log(publicKey.toBytes());
       return nacl.sign.detached.verify(
         messageBytes,
         signatureBytes,
@@ -111,5 +118,37 @@ export class AuthService {
       console.error('Error verifying Solana Signature:', error);
       return false;
     }
+  }
+
+  //sign transaction/test only
+  signChallengeJWTTx(jwt: string) {
+    const kp = this.loadKeypair(process.env.KEYPAIR_PATH);
+    const message = new TextEncoder().encode(jwt);
+    console.log(jwt);
+    // sign
+    const signature = nacl.sign.detached(message, kp.secretKey);
+    const encodedSig = bs58.encode(signature);
+
+    console.log(message);
+    console.log(signature);
+    console.log(kp.publicKey.toBytes());
+    // verify (optional, but nice to assert)
+    const ok = nacl.sign.detached.verify(
+      message,
+      signature,
+      kp.publicKey.toBytes(),
+    );
+
+    console.log(`ok: ${ok}`);
+
+    return encodedSig;
+  }
+
+  loadKeypair(filePath?: string): Keypair {
+    const path = filePath ?? `${homedir()}/.config/solana/id.json`; // default solana-keygen path
+    const secretKey = Uint8Array.from(
+      JSON.parse(fs.readFileSync(path, 'utf8')),
+    );
+    return Keypair.fromSecretKey(secretKey);
   }
 }

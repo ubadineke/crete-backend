@@ -13,6 +13,7 @@ import { UpdateServerDto } from './dto/update-server.dto';
 import { CurrentUser } from 'src/user/user.decorator';
 import { User } from 'src/user/entities/user.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CreateProposalDTO } from 'src/daos/dto/create-proposal.dto';
 
 @ApiTags('Server')
 @Controller('server')
@@ -28,23 +29,23 @@ export class ServerController {
     return this.serverService.create(createServerDto, user);
   }
 
-  @Get()
-  findAll() {
-    return this.serverService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.serverService.findAll();
+  // }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.serverService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.serverService.findOne(+id);
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateServerDto: UpdateServerDto) {
-    return this.serverService.update(+id, updateServerDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateServerDto: UpdateServerDto) {
+  //   return this.serverService.update(+id, updateServerDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.serverService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.serverService.remove(+id);
+  // }
 }

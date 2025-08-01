@@ -14,6 +14,7 @@ import { ChallengeRequestDTO } from './dto/request-challenge.dto';
 import { VerifyChallengeDTO } from './dto/verify-challenge.dto';
 import { AuthGuard } from './guards/auth.guard';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { TestSignChallengeDTO } from './dto/test-sign-challenge.dto';
 
 @Controller('auth')
 @UsePipes()
@@ -61,5 +62,16 @@ export class AuthController {
   @Post('/verify')
   verifyChallenge(@Body() verifyChallengeDto: VerifyChallengeDTO) {
     return this.authService.verifyChallenge(verifyChallengeDto);
+  }
+
+  @ApiOperation({
+    summary: 'sign jwt(test only not production)',
+    description:
+      'Sign JWT and return signature, to be verified with /auth/verify ',
+  })
+  @Post('/test-sign')
+  signTx(@Body() dto: TestSignChallengeDTO) {
+    // console.log(dto.jwt);
+    return this.authService.signChallengeJWTTx(dto.jwt);
   }
 }
