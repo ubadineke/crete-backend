@@ -10,7 +10,6 @@ import { CreateDaoDTO } from './dto/create-dao.dto';
 import { User } from 'src/user/entities/user.entity';
 import { CreateProposalDTO } from './dto/create-proposal.dto';
 import { VoteType, withCreateProposal } from '@realms-today/spl-governance';
-import { Vote } from 'lucide-react';
 @Injectable()
 export class DaosService {
   private readonly splGovernance: SplGovernance;
